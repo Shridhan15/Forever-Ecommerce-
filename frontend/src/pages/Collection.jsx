@@ -13,6 +13,8 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
+  const [sortType,setSortType]=useState('relevant')
+
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
       //if category alredy in category array remove it on clicking
@@ -43,9 +45,31 @@ const Collection = () => {
     setFilterProducts(productsCopy)
   }
 
+
+  const sortProduct=()=>{
+    //create copy of filter products only not of all product
+
+    let fpCopy=filterProducts.slice()
+
+    switch(sortType){
+      case "low-high":
+        setFilterProducts(fpCopy.sort((a,b)=>(a.price- b.price)))
+        break;
+      case "high-low":
+        setFilterProducts(fpCopy.sort((a,b)=>(b.price - a.price)))
+        break;
+      default:
+      applyFilter()
+      break;
+    }
+  }
   useEffect(()=>{
     applyFilter()
   },[category,subCategory])
+
+  useEffect(()=>{
+    sortProduct()
+  },[sortType])
 
 
  
@@ -149,7 +173,7 @@ const Collection = () => {
         <div className="flex justify-between text-base sm:text-2xl mb-4">
           <Title text1={"ALL"} text2={"COLLECTIONs"} />
           {/* product sort */}
-          <select className="border border-gray-300 text-sm px-2 cursor-pointer">
+          <select onChange={(e)=>setSortType(e.target.value)} className="border border-gray-300 text-sm px-2 cursor-pointer">
             <option value="relevant">Sory by: Relevant</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: Hight to Low</option>
