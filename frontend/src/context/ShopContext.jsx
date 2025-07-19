@@ -76,6 +76,7 @@ const ShopContextProvider = (props) => {
     setCartItems(cartData);
 
     if (token) {
+      
       try {
         await axios.post(
           backendUrl + "/api/cart/update",
