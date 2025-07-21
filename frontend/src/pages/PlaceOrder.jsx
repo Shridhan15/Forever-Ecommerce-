@@ -83,6 +83,25 @@ const PlaceOrder = () => {
 
           break;
 
+        case 'stripe':
+
+          const responseStripe = await axios.post(
+            backendUrl + "/api/order/stripe",
+            orderData,
+            { headers: { token } }
+          );
+           
+          if (responseStripe.data.success) {
+            const {session_url} = responseStripe.data;
+            // setCartItems({});
+            window.location.replace(session_url);
+          } else {
+            console.log(responseStripe.data);
+            toast.error(responseStripe.data.message);
+          }
+
+          break;
+
         default:
           break;
       }
