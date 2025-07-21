@@ -1,33 +1,33 @@
 // placing order using COD
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
-const placeOrder= async(req,res)=>{
+const placeOrder = async (req, res) => {
 
     try {
 
-        const {userId,items,amount,address} = req.body;
-        const orderData={
+        const { userId, items, amount, address } = req.body;
+        const orderData = {
             userId,
             items,
             address,
             amount,
-            paymentMethod:"COD",
-            payment:false,
-            date:Date.now(),
+            paymentMethod: "COD",
+            payment: false,
+            date: Date.now(),
         }
 
-        const newOrder= new orderModel(orderData)
+        const newOrder = new orderModel(orderData)
         await newOrder.save();
 
 
         //emptying cart after placing order
-        await userModel.findByIdAndUpdate(userId, {cartData:{}})
-        res.json({success:true, message:"Order Placed ",});
+        await userModel.findByIdAndUpdate(userId, { cartData: {} })
+        res.json({ success: true, message: "Order Placed ", });
 
     } catch (error) {
         console.log(error);
-        return res.json({success:false, message: error.message});
-        
+        return res.json({ success: false, message: error.message });
+
     }
 }
 
@@ -35,56 +35,68 @@ const placeOrder= async(req,res)=>{
 
 // placing order using stripe
 
-const placeOrderStripe= async(req,res)=>{
+const placeOrderStripe = async (req, res) => {
 
     try {
-        
+
     } catch (error) {
         console.log(error);
-        return res.json({success:false, message: error.message});
-        
+        return res.json({ success: false, message: error.message });
+
     }
 }
 
 // placing order using razorpay
 
-const placeOrderRazorpay= async(req,res)=>{
+const placeOrderRazorpay = async (req, res) => {
 
     try {
-        
+
     } catch (error) {
         console.log(error);
-        return res.json({success:false, message: error.message});
-        
+        return res.json({ success: false, message: error.message });
+
     }
 }
 
 
 // all orders data for admin panel
-const allOrders= async(req,res)=>{
-    
+const allOrders = async (req, res) => {
+
+    try {
+
+        const orders = await orderModel.find({})
+        res.json({ success: true, orders })
+
+    } catch (error) {
+        console.log(error);
+        return res.json({ success: false, message: error.message });
+
+    }
+
+
 }
 
 
 
 // all orders data for frontned
-const userOrder= async(req,res)=>{
+const userOrder = async (req, res) => {
 
     try {
 
-        const {userId}=req.body;
-        const orders = await orderModel.find({userId})
-        res.json({success:true, orders});
+        const { userId } = req.body;
+        const orders = await orderModel.find({ userId })
+        res.json({ success: true, orders });
     } catch (error) {
         console.log(error);
-        res.json({success:false, message: error.message});
-        
+        res.json({ success: false, message: error.message });
+
     }
 }
 
 
 // update order status from admin panel
-const updateStatus= async(req,res)=>{
+const updateStatus = async (req, res) => {
 
 }
 
